@@ -4,21 +4,15 @@ import turtle
 # Named constants
 Y_TICK_MARKS = 6
 STARTING_POINT = -200
-ANIMATION_SPEED = 0
+TRACER_VALUE = 5
 WINDOW_SIZE = 500
 AXIS_LENGTH = 400
 
 # Setup the environment and turtle
 drawing_area = turtle.Screen()
-drawing_area.setup(width=WINDOW_SIZE, height=WINDOW_SIZE)
-turtle.speed(ANIMATION_SPEED)
+turtle.setup(width=WINDOW_SIZE, height=WINDOW_SIZE)
 turtle.hideturtle()
-
-
-# Main function
-def main():
-    axes()
-    ticks()
+turtle.tracer(TRACER_VALUE)
 
 
 # Function to draw axes
@@ -39,9 +33,7 @@ def axes():
     turtle.stamp()
     turtle.right(180)
 
-
-# Function to draw tick marks for y-axis
-def ticks():
+# Draw ticks for y-axis
     total = 0
     turtle.pensize(width=3)
     turtle.penup()
@@ -62,20 +54,59 @@ def ticks():
         turtle.setheading(90)
         turtle.forward(78)
         turtle.pendown()
-    turtle.done()
-
-
-# Ask user for input - data points and individual data values
-arr = []
-value = int(turtle.numinput('Data Points', 'Please enter the total number of data points (0-20):', minval=0, maxval=20))
-for num in range(value):
-    array_item = int(turtle.numinput("Data Values", "Please enter data " + str(num+1) + "'s" + " value (0-30):",
-                                     minval=0, maxval=30))
-    arr.append(array_item)
 
 
 # Draw bar chart/s using the data provided by the user (stored in 'arr' array)
+def draw_bar_chart(h, colour):
+    turtle.hideturtle()
+    turtle.penup()
+    turtle.fillcolor(colour)
+    turtle.begin_fill()
+    turtle.setheading(0)
+    turtle.forward(gap)
+    turtle.left(90)
+    turtle.forward(h)
+    turtle.write(str(display_number))
+    turtle.right(90)
+    turtle.forward(width)
+    turtle.right(90)
+    turtle.forward(h)
+    turtle.penup()
+    turtle.setheading(0)
+    turtle.forward(gap)
+    turtle.pendown()
+
+    # Stop filling the shape
+    turtle.end_fill()
 
 
+# Prompt user for input - data points and individual data values
+arr = []
+value = int(turtle.numinput('Data Points', 'Please enter the total number of data points (0-20):', minval=0, maxval=20))
+for num in range(value):
+    array_item = int(turtle.numinput("Data Values", "Please enter data " + str(num + 1) + "'s" + " value (0-30):",
+                                     minval=0, maxval=30))
+    arr.append(array_item)
 
-main()
+# Draw axes and ticks
+axes()
+
+# Define variables related to bar graph
+color = ["pink", "aqua", "blanchedalmond", "coral", "lavender", "lightgreen", "darksalmon", "dodgerblue",
+         "mediumorchid", "plum", "gold", "indianred", "palevioletred", "olive", "thistle", "tomato",
+         "darkolivegreen", "sienna", "mediumpurple", "sandybrown"]
+max_height = 30
+turtle.penup()
+turtle.goto(STARTING_POINT, STARTING_POINT + 1)
+
+
+# Draw bar graph
+for number in range(len(arr)):
+    height = 390 / max_height * arr[number]
+    width = 295 / value
+    gap = 50 / value
+    display_number = arr[number]
+    draw_bar_chart(height, color[number])
+
+# Program ends
+turtle.done()
